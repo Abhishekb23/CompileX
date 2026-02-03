@@ -2,6 +2,7 @@
 using System.Diagnostics;
 
 namespace CompileX.Services;
+
 public class CodeExecutionService
 {
     public async Task<CodeResponse> ExecuteAsync(CodeRequest request)
@@ -16,24 +17,36 @@ public class CodeExecutionService
                 .Replace("\r", "")
                 .Replace("\n", "\\n");
 
-            string image = request.Language switch
+            var psi = request.Language switch
             {
-                "java" => "java-runner",
-                "python" => "python-runner",
+                "java" => new ProcessStartInfo
+                {
+                    FileName = "bash",
+                    Arguments = $"/runners/java/run.sh",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                },
+                "python" => new ProcessStartInfo
+                {
+                    FileName = "bash",
+                    Arguments = $"/runners/python/run.sh",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                },
                 _ => throw new Exception("Unsupported language")
             };
 
-            var psi = new ProcessStartInfo
-            {
-                FileName = "docker",
-                Arguments =
-                    $"run --rm " +
-                    $"--memory=256m --cpus=0.5 --network=none " +
-                    $"-e CODE=\"{escapedCode}\" " +
-                    $"{image}",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            };
+            // write code to file before execution
+            var workDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            Directory.CreateDirectory(workDir);
+
+            if (request.Language == "java")
+                await File.WriteAllTextAsync(Path.Combine(workDir, "Main.java"), request.Code);
+            else
+                await File.WriteAllTextAsync(Path.Combine(workDir, "main.py"), request.Code);
+
+            psi.WorkingDirectory = workDir;
+
 
             using var process = Process.Start(psi)!;
 
