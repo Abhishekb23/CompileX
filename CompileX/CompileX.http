@@ -1,0 +1,6 @@
+@CompileX_HostAddress = http://localhost:5273
+
+GET {{CompileX_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

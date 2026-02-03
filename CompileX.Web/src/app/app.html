@@ -1,0 +1,40 @@
+<mat-toolbar color="primary">
+  CompileX
+</mat-toolbar>
+
+<div style="max-width:1100px; margin:24px auto; padding:0 16px;">
+
+  <mat-card>
+    <mat-form-field appearance="outline" style="width:200px;">
+      <mat-label>Language</mat-label>
+      <mat-select [(ngModel)]="language" (selectionChange)="onLanguageChange()">
+        <mat-option value="java">Java</mat-option>
+        <mat-option value="python">Python</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width:100%;">
+      <mat-label>Code</mat-label>
+      <textarea matInput rows="14" [(ngModel)]="code"
+        style="font-family: Consolas, monospace;"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="run()">
+      Run
+    </button>
+
+    <mat-progress-bar *ngIf="isRunning" mode="indeterminate"
+      style="margin-top:12px;"></mat-progress-bar>
+  </mat-card>
+
+  <mat-card style="margin-top:16px;">
+    <h3>Output</h3>
+    <pre>{{ output }}</pre>
+  </mat-card>
+
+  <mat-card *ngIf="error" style="margin-top:16px; border-left:4px solid #d13438;">
+    <h3>Error</h3>
+    <pre>{{ error }}</pre>
+  </mat-card>
+
+</div>
