@@ -60,7 +60,7 @@ export class App {
     this.output = '';
     this.error = '';
 
-    this.http.post<any>('http://localhost:5273/api/code/run', {
+    this.http.post<any>('http://localhost:8080/api/code/run', {
       code: this.code,
       language: this.language
     }).subscribe(res => {

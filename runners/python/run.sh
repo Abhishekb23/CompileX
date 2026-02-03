@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
-echo "$CODE" > main.py
-python main.py
+
+python3 main.py
