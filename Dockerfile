@@ -22,7 +22,7 @@ RUN apt-get update && \
     apt-get install -y openjdk-17-jdk python3 && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy app
+# Copy published app
 COPY --from=build /app/publish .
 
 # Copy runner scripts
