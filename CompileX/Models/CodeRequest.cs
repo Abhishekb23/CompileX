@@ -2,10 +2,11 @@
 
 public class CodeRequest
 {
-    public string Code { get; set; } = string.Empty;
-    public string Language { get; set; } = "java"; // java | python
-
+    public string Language { get; set; } = "";
+    public string Code { get; set; } = "";
+    public string? Input { get; set; }
 }
+
 public class CodeResponse
 {
     public string Output { get; set; } = "";

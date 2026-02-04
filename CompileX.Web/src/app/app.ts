@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-/* Material */
+/* Angular Material */
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -10,8 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { CodeRunnerService } from './app.service';
 
+import { CodeRunnerService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,6 @@ import { CodeRunnerService } from './app.service';
   imports: [
     CommonModule,
     FormsModule,
-
     MatToolbarModule,
     MatButtonModule,
     MatSelectModule,
@@ -37,16 +36,16 @@ export class App {
   isRunning = false;
 
   codeMap: any = {
-    java: `public class Main {
+    java: `public class Hello {
   public static void main(String[] args) {
     System.out.println("Hello Java");
   }
 }`,
-
     python: `print("Hello Python")`
   };
 
   code = this.codeMap.java;
+  input = '';
 
   output = '';
   error = '';
@@ -58,34 +57,30 @@ export class App {
 
   onLanguageChange() {
     this.code = this.codeMap[this.language];
+    this.input = '';
   }
 
   run() {
-
     this.isRunning = true;
     this.output = '';
     this.error = '';
 
-    this.codeService
-      .runCode({
-        code: this.code,
-        language: this.language
-      })
-      .subscribe({
-
-        next: (res) => {
-          this.output = res.output;
-          this.error = res.error;
-          this.isRunning = false;
-          this.cdr.detectChanges();
-        },
-
-        error: () => {
-          this.error = 'Execution failed';
-          this.isRunning = false;
-          this.cdr.detectChanges();
-        }
-
-      });
+    this.codeService.runCode({
+      code: this.code,
+      language: this.language,
+      input: this.input
+    }).subscribe({
+      next: (res) => {
+        this.output = res.output;
+        this.error = res.error;
+        this.isRunning = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.error = 'Execution failed';
+        this.isRunning = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

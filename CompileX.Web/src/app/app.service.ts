@@ -4,14 +4,16 @@ import { Observable } from 'rxjs';
 import { environment } from '../environment/environment';
 
 export interface CodeRunRequest {
-  code: string;
-  language: string;
-}
-
-export interface CodeRunResponse {
-  output: string;
-  error: string;
-}
+    code: string;
+    language: string;
+    input?: string;
+  }
+  
+  export interface CodeRunResponse {
+    output: string;
+    error: string;
+  }
+  
 
 @Injectable({
   providedIn: 'root'

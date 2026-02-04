@@ -1,38 +1,57 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="toolbar">
   CompileX
 </mat-toolbar>
 
-<div style="max-width:1100px; margin:24px auto; padding:0 16px;">
+<div class="container">
 
-  <mat-card>
-    <mat-form-field appearance="outline" style="width:200px;">
-      <mat-label>Language</mat-label>
-      <mat-select [(ngModel)]="language" (selectionChange)="onLanguageChange()">
-        <mat-option value="java">Java</mat-option>
-        <mat-option value="python">Python</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <!-- Editor Card -->
+  <mat-card class="card">
 
-    <mat-form-field appearance="outline" style="width:100%;">
+    <div class="controls">
+      <mat-form-field appearance="outline">
+        <mat-label>Language</mat-label>
+        <mat-select [(ngModel)]="language" (selectionChange)="onLanguageChange()">
+          <mat-option value="java">Java</mat-option>
+          <mat-option value="python">Python</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="run()">
+        ▶ Run
+      </button>
+    </div>
+
+    <mat-form-field appearance="outline" class="full">
       <mat-label>Code</mat-label>
-      <textarea matInput rows="14" [(ngModel)]="code"
-        style="font-family: Consolas, monospace;"></textarea>
+      <textarea matInput rows="14"
+        [(ngModel)]="code"
+        class="code-editor">
+      </textarea>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="run()">
-      Run
-    </button>
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Input (stdin)</mat-label>
+      <textarea matInput rows="4"
+        [(ngModel)]="input"
+        placeholder="Input for Scanner / BufferedReader">
+      </textarea>
+    </mat-form-field>
 
-    <mat-progress-bar *ngIf="isRunning" mode="indeterminate"
-      style="margin-top:12px;"></mat-progress-bar>
+    <mat-progress-bar *ngIf="isRunning"
+      mode="indeterminate"
+      class="progress">
+    </mat-progress-bar>
+
   </mat-card>
 
-  <mat-card style="margin-top:16px;">
+  <!-- Output -->
+  <mat-card class="card">
     <h3>Output</h3>
-    <pre>{{ output }}</pre>
+    <pre>{{ output || '—' }}</pre>
   </mat-card>
 
-  <mat-card *ngIf="error" style="margin-top:16px; border-left:4px solid #d13438;">
+  <!-- Error -->
+  <mat-card *ngIf="error" class="card error">
     <h3>Error</h3>
     <pre>{{ error }}</pre>
   </mat-card>
